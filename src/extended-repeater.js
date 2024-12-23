@@ -12,34 +12,19 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  * repeater('STRING', { repeatTimes: 3, separator: '**', 
  * addition: 'PLUS', additionRepeatTimes: 3, additionSeparator: '00' })
- * => 'STRINGPLUS00PLUS00PLUS**STRINGPLUS00PLUS00PLUS**STRINGPLUS00PLUS00PLUS'
+ * => ' STRING PLUS 00 PLUS 00 PLUS ** STRINGPLUS00PLUS00PLUS**STRINGPLUS00PLUS00PLUS'
  *
  */
 function repeater(str, options) {
-  let resultStr = '';
-  let separator = '';
+  let repeatT = Object.hasOwn(options, "repeatTimes") ? options.repeatTimes : 1;
+  let septr = Object.hasOwn(options, "separator") ? options.separator : '+';
+  let addition = Object.hasOwn(options, "addition") ? String(options.addition) : '';
+  let addSeptr = Object.hasOwn(options, "additionSeparator") ? options.additionSeparator : '|';
+  let addSeptrTimes = Object.hasOwn(options, "additionRepeatTimes") ? options.additionRepeatTimes : 1;
 
-  if (options.addition) {
-    for (let index = 0; index < options.additionRepeatTimes; index++) {
-      separator += options.addition;
-    }
-  }
-  separator += options.separator;
+  let additionStr = Array(addSeptrTimes).fill(addition).join(addSeptr);
 
-  for (let index = 0; index < options.repeatTimes; index++) {
-    resultStr += `${str}`;
-    if (index !== (options.repeatTimes - 1)) {
-      if (!options.separator) {
-        resultStr += `+`;
-      } else {
-        resultStr += `${separator}`
-      }
-    }
-  }
-  if (options.addition) {
-    resultStr += options.addition;
-  }
-  return resultStr;
+  return Array(repeatT).fill(str + additionStr).join(septr);
 }
 
 module.exports = {
